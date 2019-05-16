@@ -10,7 +10,7 @@ pub type DatabaseResult<T> = Result<T, DatabaseError>;
 
 #[derive(Debug)]
 pub enum DatabaseError {
-    CargoTomlNotFound,
+    ProjectRootNotFound,
     DatabaseUrlMissing,
     IoError(io::Error),
     QueryError(result::Error),
@@ -38,8 +38,8 @@ impl From<result::ConnectionError> for DatabaseError {
 impl Error for DatabaseError {
     fn description(&self) -> &str {
         match *self {
-            CargoTomlNotFound => {
-                "Unable to find Cargo.toml in this directory or any parent directories."
+            ProjectRootNotFound => {
+                "Unable to find diesel.toml or Cargo.toml in this directory or any parent directories."
             }
             DatabaseUrlMissing => {
                 "The --database-url argument must be passed, or the DATABASE_URL environment variable must be set."
@@ -69,7 +69,7 @@ impl fmt::Display for DatabaseError {
 impl PartialEq for DatabaseError {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
-            (&CargoTomlNotFound, &CargoTomlNotFound) => true,
+            (&ProjectRootNotFound, &ProjectRootNotFound) => true,
             _ => false,
         }
     }

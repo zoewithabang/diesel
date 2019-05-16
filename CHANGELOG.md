@@ -42,6 +42,14 @@ for Rust libraries in [RFC #1105](https://github.com/rust-lang/rfcs/blob/master/
   have been. All types in Diesel are now correctly only considered
   non-aggregate if their parts are.
 
+* Diesel CLI will now look for `diesel.toml` to determine the project root
+  before looking for `Cargo.toml`.
+
+* Any relative paths in `diesel.toml` will now be treated as relative to the
+  project root (the directory containing either `diesel.toml` or `Cargo.toml`).
+  They are no longer dependent on the current working directory (for all
+  directories in the same project)
+
 ### Deprecated
 
 * `diesel_(prefix|postfix|infix)_operator!` have been deprecated. These macros
